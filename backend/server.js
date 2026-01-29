@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 require('dotenv').config();
+=======
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -24,6 +27,11 @@ const { generateToken: generateCSRFToken } = require('./middleware/csrf');
 const { preventHPP } = require('./middleware/hpp');
 const logger = require('./utils/logger');
 
+<<<<<<< HEAD
+=======
+require('dotenv').config();
+
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 const app = express();
 
 // ==========================================
@@ -433,6 +441,7 @@ const gracefulShutdown = async (signal) => {
   console.log(`\n${signal} received. Starting graceful shutdown...`);
 
   // Close server
+<<<<<<< HEAD
   server.close(async () => {
     console.log('✅ HTTP server closed');
 
@@ -445,6 +454,16 @@ const gracefulShutdown = async (signal) => {
       console.error('❌ Error closing MongoDB:', err.message);
       process.exit(1);
     }
+=======
+  server.close(() => {
+    console.log('✅ HTTP server closed');
+
+    // Close database connection
+    mongoose.connection.close(false, () => {
+      console.log('✅ MongoDB connection closed');
+      process.exit(0);
+    });
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   });
 
   // Force shutdown after 10 seconds

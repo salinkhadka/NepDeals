@@ -29,7 +29,17 @@ exports.protect = async (req, res, next) => {
     token = req.headers.authorization.split(' ')[1];
   }
 
+<<<<<<< HEAD
   // No token found - this is normal when not logged in
+=======
+  // Debug log (remove in production)
+  if (!token) {
+    console.log('❌ No token found in cookies or headers');
+    console.log('Cookies:', req.cookies);
+    console.log('Headers:', req.headers.authorization);
+  }
+
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   if (!token) {
     return res.status(401).json({
       success: false,

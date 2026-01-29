@@ -28,7 +28,11 @@ import './Auth.css'
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '', phone: '' })
   const [loading, setLoading] = useState(false)
+<<<<<<< HEAD
   const [recaptchaToken, setRecaptchaToken] = useState(import.meta.env.DEV ? 'dev-token' : null)
+=======
+  const [recaptchaToken, setRecaptchaToken] = useState(null)
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   const { register } = useAuth()
   const navigate = useNavigate()
 
@@ -94,7 +98,11 @@ const Register = () => {
               <GoogleRecaptcha onVerify={setRecaptchaToken} />
             </div>
 
+<<<<<<< HEAD
             <button type="submit" className="btn btn-primary btn-block" disabled={loading || (!recaptchaToken && !import.meta.env.DEV)}>
+=======
+            <button type="submit" className="btn btn-primary btn-block" disabled={loading || !recaptchaToken}>
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
               {loading ? 'Creating...' : 'Sign Up'}
             </button>
           </form>

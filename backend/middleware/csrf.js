@@ -9,7 +9,11 @@
 // exports.generateToken = (req, res, next) => {
 //   const token = crypto.randomBytes(32).toString('hex');
 //   const expiresAt = Date.now() + 15 * 60 * 1000;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   tokens.set(token, { expiresAt, createdAt: Date.now() });
 
 //   cleanExpiredTokens();
@@ -37,7 +41,11 @@
 //   }
 
 //   const token = req.body._csrf || req.headers['x-csrf-token'] || req.cookies['csrf-token'];
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   if (!token) {
 //     return res.status(403).json({
 //       success: false,
@@ -46,7 +54,11 @@
 //   }
 
 //   const tokenData = tokens.get(token);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   if (!tokenData) {
 //     return res.status(403).json({
 //       success: false,
@@ -120,14 +132,23 @@ const tokens = new Map();
 exports.generateToken = (req, res, next) => {
   const token = crypto.randomBytes(32).toString('hex');
   const expiresAt = Date.now() + 15 * 60 * 1000;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   tokens.set(token, { expiresAt, createdAt: Date.now() });
   cleanExpiredTokens();
 
   // ✅ FIX: Add Secure flag in production
   res.cookie('csrf-token', token, {
+<<<<<<< HEAD
     httpOnly: false,
     secure: process.env.NODE_ENV === 'production', // ✅ HTTPS only in prod
+=======
+    httpOnly: false, 
+    secure: process.env.NODE_ENV === 'development', // ✅ HTTPS only in prod
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     sameSite: 'lax',
     maxAge: 15 * 60 * 1000
   });
@@ -146,7 +167,11 @@ exports.verifyToken = (req, res, next) => {
   }
 
   const token = req.body._csrf || req.headers['x-csrf-token'] || req.cookies['csrf-token'];
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   if (!token) {
     return res.status(403).json({
       success: false,
@@ -155,7 +180,11 @@ exports.verifyToken = (req, res, next) => {
   }
 
   const tokenData = tokens.get(token);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   if (!tokenData) {
     return res.status(403).json({
       success: false,

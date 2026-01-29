@@ -63,7 +63,11 @@
 //   }
 
 //   const isAuth = !!req.headers.authorization || !!req.cookies.token;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   const limiter = rateLimit({
 //     store: new RedisStore({ 
 //       client: redis, 
@@ -78,18 +82,30 @@
 //     legacyHeaders: false,
 //     keyGenerator: (req) => req.headers['x-forwarded-for'] || req.ip 
 //   });
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   limiter(req, res, next);
 // };
 
 // // 5. Host Header Validation
 // const validateHostHeader = (req, res, next) => {
 //   if (process.env.NODE_ENV === 'development') return next(); // Skip in dev
+<<<<<<< HEAD
 
 //   const host = req.headers.host;
 //   // Add your domain here
 //   const allowedHosts = [new URL(process.env.FRONTEND_URL).host, 'localhost:5000'];
 
+=======
+  
+//   const host = req.headers.host;
+//   // Add your domain here
+//   const allowedHosts = [new URL(process.env.FRONTEND_URL).host, 'localhost:5000'];
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   if (!allowedHosts.includes(host)) {
 //     return res.status(400).json({ success: false, message: 'Invalid Host Header' });
 //   }
@@ -113,7 +129,11 @@
 //     }
 //     return obj;
 //   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
 //   req.body = sanitize(req.body);
 //   req.query = sanitize(req.query);
 //   req.params = sanitize(req.params);
@@ -237,7 +257,11 @@ class InMemoryStore {
   constructor() {
     this.hits = new Map();
     this.resetTime = new Map();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // Cleanup every 1 minute
     setInterval(() => this.cleanup(), 60000);
   }
@@ -245,14 +269,22 @@ class InMemoryStore {
   increment(key) {
     const now = Date.now();
     const current = this.hits.get(key) || { count: 0, resetTime: now + 60000 };
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     if (now > current.resetTime) {
       current.count = 1;
       current.resetTime = now + 60000;
     } else {
       current.count++;
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     this.hits.set(key, current);
     return current;
   }
@@ -285,7 +317,11 @@ class JWTBlacklist {
   constructor() {
     this.blacklist = new Set();
     this.expiryMap = new Map();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // Cleanup every 5 minutes
     setInterval(() => this.cleanup(), 5 * 60 * 1000);
   }
@@ -293,7 +329,11 @@ class JWTBlacklist {
   async add(jti, expiresIn) {
     this.blacklist.add(jti);
     this.expiryMap.set(jti, Date.now() + (expiresIn * 1000));
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // ✅ Persist to MongoDB
     try {
       const BlacklistedToken = require('../models/BlacklistedToken');
@@ -323,15 +363,26 @@ class JWTBlacklist {
   async loadFromDB() {
     try {
       const BlacklistedToken = require('../models/BlacklistedToken');
+<<<<<<< HEAD
       const tokens = await BlacklistedToken.find({
         expiresAt: { $gt: new Date() }
       });
 
+=======
+      const tokens = await BlacklistedToken.find({ 
+        expiresAt: { $gt: new Date() } 
+      });
+      
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       tokens.forEach(token => {
         this.blacklist.add(token.jti);
         this.expiryMap.set(token.jti, token.expiresAt.getTime());
       });
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       console.log(`✅ Loaded ${tokens.length} blacklisted tokens from DB`);
     } catch (e) {
       console.warn('Could not load blacklist from DB:', e.message);
@@ -369,7 +420,11 @@ const dynamicRateLimiter = rateLimit({
       path: req.path,
       userAgent: req.get('user-agent')
     });
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     res.status(429).json({
       success: false,
       message: 'Too many requests. Please try again later.',
@@ -387,6 +442,7 @@ const dynamicRateLimiter = rateLimit({
 // ✅ HOST HEADER VALIDATION
 const validateHostHeader = (req, res, next) => {
   if (process.env.NODE_ENV === 'development') return next();
+<<<<<<< HEAD
 
   const host = req.headers.host;
   const allowedHosts = [
@@ -402,6 +458,16 @@ const validateHostHeader = (req, res, next) => {
     }
   } catch (e) { }
 
+=======
+  
+  const host = req.headers.host;
+  const allowedHosts = [
+    new URL(process.env.FRONTEND_URL).host,
+    'localhost:5000',
+    'localhost:5173'
+  ];
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   if (!allowedHosts.includes(host)) {
     logSecurityEvent('INVALID_HOST_HEADER', {
       host,
@@ -424,8 +490,13 @@ const advancedInputSanitization = (req, res, next) => {
     }
     if (obj && typeof obj === 'object') {
       for (const key in obj) {
+<<<<<<< HEAD
         if (key.startsWith('$') || key.startsWith('__') ||
           key === 'constructor' || key === 'prototype') {
+=======
+        if (key.startsWith('$') || key.startsWith('__') || 
+            key === 'constructor' || key === 'prototype') {
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
           delete obj[key];
           logSecurityEvent('NOSQL_INJECTION_ATTEMPT', {
             key,
@@ -439,7 +510,11 @@ const advancedInputSanitization = (req, res, next) => {
     }
     return obj;
   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   req.body = sanitize(req.body);
   req.query = sanitize(req.query);
   req.params = sanitize(req.params);
@@ -468,7 +543,11 @@ const advancedInputSanitization = (req, res, next) => {
 const enhancedCSP = (req, res, next) => {
   const nonce = crypto.randomBytes(16).toString('base64')
   req.cspNonce = nonce
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   res.setHeader('Content-Security-Policy', [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' https://www.google.com https://www.gstatic.com`,
@@ -480,9 +559,15 @@ const enhancedCSP = (req, res, next) => {
     "form-action 'self'",
     "upgrade-insecure-requests",
     "block-all-mixed-content",
+<<<<<<< HEAD
     "report-uri /api/csp-report"
   ].join('; '))
 
+=======
+    "report-uri /api/csp-report" 
+  ].join('; '))
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   next()
 }
 
@@ -527,11 +612,19 @@ const businessLogicValidator = (req, res, next) => {
   if (req.body.quantity && (req.body.quantity < 0 || req.body.quantity > 1000)) {
     return res.status(400).json({ success: false, message: 'Invalid quantity' });
   }
+<<<<<<< HEAD
 
   if (req.body.price && (req.body.price < 0 || req.body.price > 10000000)) {
     return res.status(400).json({ success: false, message: 'Invalid price' });
   }
 
+=======
+  
+  if (req.body.price && (req.body.price < 0 || req.body.price > 10000000)) {
+    return res.status(400).json({ success: false, message: 'Invalid price' });
+  }
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   next();
 };
 
@@ -559,7 +652,11 @@ const validateInputSizes = (req, res, next) => {
     description: 5000,
     notes: 1000
   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   const checkSize = (obj) => {
     for (const key in obj) {
       if (typeof obj[key] === 'string' && limits[key]) {
@@ -571,24 +668,39 @@ const validateInputSizes = (req, res, next) => {
             ip: req.ip,
             path: req.path
           });
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
           return res.status(400).json({
             success: false,
             message: `Field '${key}' exceeds maximum length of ${limits[key]}`
           });
         }
       }
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       if (typeof obj[key] === 'object' && obj[key] !== null) {
         const result = checkSize(obj[key]);
         if (result) return result;
       }
     }
   };
+<<<<<<< HEAD
 
   const violation = checkSize(req.body);
   if (violation) return violation;
 
+=======
+  
+  const violation = checkSize(req.body);
+  if (violation) return violation;
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   next();
 };
 

@@ -50,6 +50,7 @@ const rateLimitMap = new Map();
 const checkRateLimit = (identifier, maxAttempts = 5, windowMs = 15 * 60 * 1000) => {
   const now = Date.now();
   const userAttempts = rateLimitMap.get(identifier) || [];
+<<<<<<< HEAD
 
   const recentAttempts = userAttempts.filter(time => now - time < windowMs);
 
@@ -57,6 +58,15 @@ const checkRateLimit = (identifier, maxAttempts = 5, windowMs = 15 * 60 * 1000) 
     return false;
   }
 
+=======
+  
+  const recentAttempts = userAttempts.filter(time => now - time < windowMs);
+  
+  if (recentAttempts.length >= maxAttempts) {
+    return false;
+  }
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   recentAttempts.push(now);
   rateLimitMap.set(identifier, recentAttempts);
   return true;
@@ -67,13 +77,21 @@ const sendTokenResponse = (user, token, res, jti) => {
   const options = {
     expires: new Date(Date.now() + COOKIE_EXPIRES),
     httpOnly: true,
+<<<<<<< HEAD
     secure: process.env.NODE_ENV === 'production',
+=======
+    secure: process.env.NODE_ENV === 'development',
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     sameSite: 'strict',
     path: '/'
   };
 
   res.cookie('token', token, options);
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   // 🔧 FIX: Get decrypted phone properly
   let decryptedPhone = null;
   if (user.phone) {
@@ -113,26 +131,44 @@ exports.register = async (req, res) => {
     // 1. RATE LIMITING
     const clientIp = req.ip || req.connection.remoteAddress;
     if (!checkRateLimit(`register_${clientIp}`, 3, 60 * 60 * 1000)) {
+<<<<<<< HEAD
       return res.status(429).json({
         success: false,
         message: 'Too many registration attempts. Try again later.'
+=======
+      return res.status(429).json({ 
+        success: false, 
+        message: 'Too many registration attempts. Try again later.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // 2. RECAPTCHA (Production only)
     if (process.env.NODE_ENV === 'production') {
       if (!recaptchaToken) {
+<<<<<<< HEAD
         return res.status(400).json({
           success: false,
           message: 'Security verification required'
+=======
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Security verification required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
       const recaptchaResult = await verifyRecaptcha(recaptchaToken, clientIp);
       if (!recaptchaResult.success) {
         logSecurityEvent('RECAPTCHA_FAILED', { ip: clientIp });
+<<<<<<< HEAD
         return res.status(400).json({
           success: false,
           message: 'Security check failed'
+=======
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Security check failed' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
     }
@@ -143,23 +179,41 @@ exports.register = async (req, res) => {
     const cleanPhone = sanitizePhone(phone);
 
     if (!cleanEmail) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Invalid email format'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid email format' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     if (!cleanName || cleanName.length < 2) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Name must be at least 2 characters'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Name must be at least 2 characters' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     if (!cleanPhone) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Invalid phone number'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid phone number' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -167,18 +221,31 @@ exports.register = async (req, res) => {
     const pwdCheck = validatePassword(password);
     if (!pwdCheck.isValid) {
       logSecurityEvent('WEAK_PASSWORD', { email: cleanEmail, ip: clientIp });
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Password does not meet security requirements',
         errors: pwdCheck.errors
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password does not meet security requirements',
+        errors: pwdCheck.errors 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     if (isCommonPassword(password)) {
       logSecurityEvent('COMMON_PASSWORD', { email: cleanEmail, ip: clientIp });
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Password is too common. Choose a stronger password.'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password is too common. Choose a stronger password.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -188,9 +255,15 @@ exports.register = async (req, res) => {
       logSecurityEvent('DUPLICATE_REGISTRATION', { email: cleanEmail, ip: clientIp });
       // Don't reveal user exists - timing attack prevention
       await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 200));
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Registration failed. Please try again.'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Registration failed. Please try again.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -222,16 +295,24 @@ exports.register = async (req, res) => {
     const jti = crypto.randomUUID();
     const token = generateToken(user._id, jti, TOKEN_EXPIRES);
 
+<<<<<<< HEAD
     logSecurityEvent('USER_REGISTERED', {
       userId: user._id,
       email: user.email,
       ip: clientIp
+=======
+    logSecurityEvent('USER_REGISTERED', { 
+      userId: user._id, 
+      email: user.email, 
+      ip: clientIp 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
 
     sendTokenResponse(user, token, res, jti);
 
   } catch (error) {
     console.error('Registration error:', error);
+<<<<<<< HEAD
     logSecurityEvent('REGISTRATION_ERROR', {
       error: error.message,
       ip: req.ip
@@ -239,6 +320,15 @@ exports.register = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Registration failed. Please try again.'
+=======
+    logSecurityEvent('REGISTRATION_ERROR', { 
+      error: error.message, 
+      ip: req.ip 
+    });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Registration failed. Please try again.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -254,18 +344,30 @@ exports.login = async (req, res) => {
     // 1. INPUT VALIDATION
     const cleanEmail = sanitizeEmail(email);
     if (!cleanEmail || !password) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Email and password required'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email and password required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // 2. RATE LIMITING (Per IP)
     if (!checkRateLimit(`login_${clientIp}`, 10, 1 * 60 * 1000)) {
       logSecurityEvent('LOGIN_RATE_LIMIT', { ip: clientIp });
+<<<<<<< HEAD
       return res.status(429).json({
         success: false,
         message: 'Too many login attempts. Try again in 15 minutes.'
+=======
+      return res.status(429).json({ 
+        success: false, 
+        message: 'Too many login attempts. Try again in 15 minutes.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -277,15 +379,22 @@ exports.login = async (req, res) => {
       // Timing attack prevention
       await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 200));
       logSecurityEvent('LOGIN_FAILED_USER_NOT_FOUND', { email: cleanEmail, ip: clientIp });
+<<<<<<< HEAD
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
+=======
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid credentials' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // 4. ACCOUNT LOCK CHECK
     if (user.isLocked && user.isLocked()) {
       const mins = Math.ceil((user.lockUntil - Date.now()) / 60000);
+<<<<<<< HEAD
       logSecurityEvent('LOGIN_ATTEMPT_LOCKED', {
         userId: user._id,
         ip: clientIp,
@@ -294,24 +403,48 @@ exports.login = async (req, res) => {
       return res.status(423).json({
         success: false,
         message: `Account locked due to multiple failed attempts. Try again in ${mins} minute(s).`
+=======
+      logSecurityEvent('LOGIN_ATTEMPT_LOCKED', { 
+        userId: user._id, 
+        ip: clientIp, 
+        remainingMinutes: mins 
+      });
+      return res.status(423).json({ 
+        success: false, 
+        message: `Account locked due to multiple failed attempts. Try again in ${mins} minute(s).` 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // 5. RECAPTCHA (if attempts >= 3)
     if (user.loginAttempts >= 3 && !totpCode) {
       if (!recaptchaToken) {
+<<<<<<< HEAD
         return res.status(400).json({
           success: false,
           message: 'Security verification required',
           requiresRecaptcha: true
+=======
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Security verification required',
+          requiresRecaptcha: true 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
       const recaptchaResult = await verifyRecaptcha(recaptchaToken, clientIp);
       if (!recaptchaResult.success) {
+<<<<<<< HEAD
         return res.status(400).json({
           success: false,
           message: 'Security check failed',
           requiresRecaptcha: true
+=======
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Security check failed',
+          requiresRecaptcha: true 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
     }
@@ -320,6 +453,7 @@ exports.login = async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       await user.incLoginAttempts();
+<<<<<<< HEAD
       logSecurityEvent('LOGIN_FAILED_PASSWORD', {
         userId: user._id,
         attempts: user.loginAttempts + 1,
@@ -327,6 +461,15 @@ exports.login = async (req, res) => {
       });
       return res.status(401).json({
         success: false,
+=======
+      logSecurityEvent('LOGIN_FAILED_PASSWORD', { 
+        userId: user._id, 
+        attempts: user.loginAttempts + 1, 
+        ip: clientIp 
+      });
+      return res.status(401).json({ 
+        success: false, 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         message: 'Invalid credentials',
         attemptsRemaining: MAX_LOGIN_ATTEMPTS - (user.loginAttempts + 1)
       });
@@ -334,8 +477,13 @@ exports.login = async (req, res) => {
 
     // 7. EMAIL VERIFICATION CHECK
     if (!user.isEmailVerified) {
+<<<<<<< HEAD
       return res.status(403).json({
         success: false,
+=======
+      return res.status(403).json({ 
+        success: false, 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         message: 'Please verify your email before logging in',
         code: 'EMAIL_NOT_VERIFIED'
       });
@@ -344,16 +492,24 @@ exports.login = async (req, res) => {
     // 8. TWO-FACTOR AUTHENTICATION
     if (user.twoFactorEnabled) {
       if (!totpCode) {
+<<<<<<< HEAD
         return res.status(200).json({
           success: false,
           requires2FA: true,
           message: 'Enter your 2FA code'
+=======
+        return res.status(200).json({ 
+          success: false, 
+          requires2FA: true,
+          message: 'Enter your 2FA code' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
 
       const validTotp = verifyTOTP(totpCode, user.twoFactorSecret);
       if (!validTotp) {
         await user.incLoginAttempts();
+<<<<<<< HEAD
         logSecurityEvent('LOGIN_FAILED_2FA', {
           userId: user._id,
           ip: clientIp
@@ -361,20 +517,39 @@ exports.login = async (req, res) => {
         return res.status(401).json({
           success: false,
           message: 'Invalid 2FA code'
+=======
+        logSecurityEvent('LOGIN_FAILED_2FA', { 
+          userId: user._id, 
+          ip: clientIp 
+        });
+        return res.status(401).json({ 
+          success: false, 
+          message: 'Invalid 2FA code' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
     }
 
     // 9. SUCCESS - RESET ATTEMPTS & CREATE SESSION IN MONGODB
     await user.resetLoginAttempts();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // ✅ Generate tokens and session ID
     const jti = crypto.randomUUID();
     const sessionId = crypto.randomUUID();
     const token = generateToken(user._id, jti, TOKEN_EXPIRES);
+<<<<<<< HEAD
 
     const expiresAt = new Date(Date.now() + COOKIE_EXPIRES);
 
+=======
+    
+    const expiresAt = new Date(Date.now() + COOKIE_EXPIRES);
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     try {
       // ✅ Create session in MongoDB
       await Session.create({
@@ -387,6 +562,7 @@ exports.login = async (req, res) => {
         lastActivity: new Date(),
         expiresAt
       });
+<<<<<<< HEAD
 
       // ✅ Enforce max sessions per user
       const sessions = await Session.find({ userId: user._id })
@@ -399,17 +575,39 @@ exports.login = async (req, res) => {
           _id: { $in: toDelete.map(s => s._id) }
         });
 
+=======
+      
+      // ✅ Enforce max sessions per user
+      const sessions = await Session.find({ userId: user._id })
+        .sort({ lastActivity: -1 });
+      
+      if (sessions.length > (user.maxSessions || 3)) {
+        // Delete oldest sessions
+        const toDelete = sessions.slice(user.maxSessions || 3);
+        await Session.deleteMany({ 
+          _id: { $in: toDelete.map(s => s._id) } 
+        });
+        
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         logSecurityEvent('MAX_SESSIONS_EXCEEDED', {
           userId: user._id,
           deletedCount: toDelete.length
         });
       }
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     } catch (sessionError) {
       console.error('Session creation error:', sessionError);
       // Continue with login even if session creation fails (fallback)
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // ✅ Update user login info
     await User.findByIdAndUpdate(user._id, {
       $set: {
@@ -418,8 +616,13 @@ exports.login = async (req, res) => {
       }
     });
 
+<<<<<<< HEAD
     logSecurityEvent('LOGIN_SUCCESS', {
       userId: user._id,
+=======
+    logSecurityEvent('LOGIN_SUCCESS', { 
+      userId: user._id, 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       ip: clientIp,
       sessionId
     });
@@ -432,9 +635,15 @@ exports.login = async (req, res) => {
       error: error.message,
       stack: error.stack
     });
+<<<<<<< HEAD
     res.status(500).json({
       success: false,
       message: 'Login failed. Please try again.'
+=======
+    res.status(500).json({ 
+      success: false, 
+      message: 'Login failed. Please try again.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -445,10 +654,17 @@ exports.logout = async (req, res) => {
     if (req.user && req.jti) {
       // ✅ 1. Add JWT to blacklist (in-memory + MongoDB)
       await JWTBlacklist.add(req.jti, COOKIE_EXPIRES / 1000);
+<<<<<<< HEAD
 
       // ✅ 2. Remove session from MongoDB
       const deletedSession = await Session.findOneAndDelete({ token: req.jti });
 
+=======
+ 
+      // ✅ 2. Remove session from MongoDB
+      const deletedSession = await Session.findOneAndDelete({ token: req.jti });
+ 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       if (deletedSession) {
         logSecurityEvent('SESSION_DELETED', {
           userId: req.user._id,
@@ -457,25 +673,44 @@ exports.logout = async (req, res) => {
         });
       }
     }
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // ✅ 3. Clear cookie
     res.cookie('token', 'none', {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true,
+<<<<<<< HEAD
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict'
     });
 
+=======
+      secure: process.env.NODE_ENV === 'development',
+      sameSite: 'strict'
+    });
+ 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     logSecurityEvent('USER_LOGOUT', {
       userId: req.user?._id,
       ip: req.ip
     });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     res.status(200).json({
       success: true,
       message: 'Logged out successfully'
     });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
   } catch (error) {
     console.error('Logout error:', error);
     logSecurityEvent('LOGOUT_ERROR', {
@@ -502,6 +737,7 @@ exports.logout = async (req, res) => {
 exports.logoutAllSessions = async (req, res) => {
   try {
     if (!req.user) {
+<<<<<<< HEAD
       return res.status(401).json({
         success: false,
         message: 'Not authenticated'
@@ -509,17 +745,32 @@ exports.logoutAllSessions = async (req, res) => {
     }
     const result = await Session.deleteMany({ userId: req.user._id });
 
+=======
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Not authenticated' 
+      });
+    }
+    const result = await Session.deleteMany({ userId: req.user._id });
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     logSecurityEvent('LOGOUT_ALL_SESSIONS', {
       userId: req.user._id,
       deletedCount: result.deletedCount,
       ip: req.ip
     });
+<<<<<<< HEAD
     res.cookie('token', 'none', {
       expires: new Date(Date.now() + 10 * 1000),
+=======
+    res.cookie('token', 'none', { 
+      expires: new Date(Date.now() + 10 * 1000), 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict'
     });
+<<<<<<< HEAD
     res.status(200).json({
       success: true,
       message: `Logged out from ${result.deletedCount} device(s)`,
@@ -531,6 +782,19 @@ exports.logoutAllSessions = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to logout all sessions'
+=======
+    res.status(200).json({ 
+      success: true, 
+      message: `Logged out from ${result.deletedCount} device(s)`,
+      count: result.deletedCount
+    });
+    
+  } catch (error) {
+    console.error('Logout all sessions error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to logout all sessions' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -541,37 +805,65 @@ exports.logoutAllSessions = async (req, res) => {
 exports.getActiveSessions = async (req, res) => {
   try {
     if (!req.user) {
+<<<<<<< HEAD
       return res.status(401).json({
         success: false,
         message: 'Not authenticated'
       });
     }
 
+=======
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Not authenticated' 
+      });
+    }
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     const sessions = await Session.find({ userId: req.user._id })
       .select('sessionId deviceInfo ipAddress lastActivity createdAt expiresAt')
       .sort({ lastActivity: -1 })
       .lean();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // ✅ Mark current session
     const currentSessions = sessions.map(session => ({
       ...session,
       isCurrent: session.token === req.jti
     }));
+<<<<<<< HEAD
 
     res.status(200).json({
       success: true,
+=======
+    
+    res.status(200).json({ 
+      success: true, 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       data: {
         sessions: currentSessions,
         count: sessions.length,
         maxAllowed: req.user.maxSessions || 3
       }
     });
+<<<<<<< HEAD
 
   } catch (error) {
     console.error('Get sessions error:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to fetch sessions'
+=======
+    
+  } catch (error) {
+    console.error('Get sessions error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch sessions' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -591,20 +883,35 @@ exports.forgotPassword = async (req, res) => {
       if (attempts === 1) {
         await redis.expire(rateLimitKey, 3600); // 1 hour window
       }
+<<<<<<< HEAD
 
       if (attempts > 3) {
         logSecurityEvent('PASSWORD_RESET_RATE_LIMIT', { email, ip: clientIp });
         return res.status(429).json({
           success: false,
           message: 'Too many password reset attempts. Try again in 1 hour.'
+=======
+      
+      if (attempts > 3) {
+        logSecurityEvent('PASSWORD_RESET_RATE_LIMIT', { email, ip: clientIp });
+        return res.status(429).json({ 
+          success: false, 
+          message: 'Too many password reset attempts. Try again in 1 hour.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
     } catch (redisError) {
       // Fallback to existing in-memory rate limiting
       if (!checkRateLimit(`forgot_${clientIp}`, 3, 60 * 60 * 1000)) {
+<<<<<<< HEAD
         return res.status(429).json({
           success: false,
           message: 'Too many requests. Try again later.'
+=======
+        return res.status(429).json({ 
+          success: false, 
+          message: 'Too many requests. Try again later.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
         });
       }
     }
@@ -613,26 +920,44 @@ exports.forgotPassword = async (req, res) => {
 
     // Rate limiting
     if (!checkRateLimit(`forgot_${clientIp}`, 3, 60 * 60 * 1000)) {
+<<<<<<< HEAD
       return res.status(429).json({
         success: false,
         message: 'Too many requests. Try again later.'
+=======
+      return res.status(429).json({ 
+        success: false, 
+        message: 'Too many requests. Try again later.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     const cleanEmail = sanitizeEmail(email);
     if (!cleanEmail) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Valid email required'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Valid email required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     const user = await User.findOne({ email: cleanEmail });
 
     // Always return success (prevent user enumeration)
+<<<<<<< HEAD
     const genericResponse = {
       success: true,
       message: 'If an account exists, a reset code has been sent.'
+=======
+    const genericResponse = { 
+      success: true, 
+      message: 'If an account exists, a reset code has been sent.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     };
 
     if (!user) {
@@ -657,16 +982,28 @@ exports.forgotPassword = async (req, res) => {
       console.error('Email sending failed:', emailError);
     }
 
+<<<<<<< HEAD
     logSecurityEvent('PASSWORD_RESET_REQUESTED', {
       userId: user._id,
       ip: clientIp
+=======
+    logSecurityEvent('PASSWORD_RESET_REQUESTED', { 
+      userId: user._id, 
+      ip: clientIp 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
 
     res.status(200).json(genericResponse);
   } catch (error) {
+<<<<<<< HEAD
     res.status(500).json({
       success: false,
       message: 'Request failed. Try again.'
+=======
+    res.status(500).json({ 
+      success: false, 
+      message: 'Request failed. Try again.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -681,22 +1018,35 @@ exports.verifyOTP = async (req, res) => {
 
     const cleanEmail = sanitizeEmail(email);
     if (!cleanEmail || !otp) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Email and OTP required'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email and OTP required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // Rate limiting
     if (!checkRateLimit(`otp_${cleanEmail}`, 5, 15 * 60 * 1000)) {
+<<<<<<< HEAD
       return res.status(429).json({
         success: false,
         message: 'Too many attempts. Try again later.'
+=======
+      return res.status(429).json({ 
+        success: false, 
+        message: 'Too many attempts. Try again later.' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     const otpResult = verifyOTPUtils(cleanEmail, otp);
     if (!otpResult.valid) {
+<<<<<<< HEAD
       logSecurityEvent('OTP_VERIFICATION_FAILED', {
         email: cleanEmail,
         ip: clientIp
@@ -704,14 +1054,29 @@ exports.verifyOTP = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: otpResult.message
+=======
+      logSecurityEvent('OTP_VERIFICATION_FAILED', { 
+        email: cleanEmail, 
+        ip: clientIp 
+      });
+      return res.status(400).json({ 
+        success: false, 
+        message: otpResult.message 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     const user = await User.findOne({ email: cleanEmail });
     if (!user) {
+<<<<<<< HEAD
       return res.status(404).json({
         success: false,
         message: 'User not found'
+=======
+      return res.status(404).json({ 
+        success: false, 
+        message: 'User not found' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -722,6 +1087,7 @@ exports.verifyOTP = async (req, res) => {
 
     logSecurityEvent('OTP_VERIFIED', { userId: user._id, ip: clientIp });
 
+<<<<<<< HEAD
     res.status(200).json({
       success: true,
       data: { resetToken }
@@ -730,6 +1096,16 @@ exports.verifyOTP = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Verification failed'
+=======
+    res.status(200).json({ 
+      success: true, 
+      data: { resetToken } 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: 'Verification failed' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -743,9 +1119,15 @@ exports.resetPassword = async (req, res) => {
     const clientIp = req.ip || req.connection.remoteAddress;
 
     if (!resetToken || !password) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Token and password required'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Token and password required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
     const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
@@ -755,21 +1137,35 @@ exports.resetPassword = async (req, res) => {
     }).select('+passwordHistory');
 
     if (!user) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Invalid or expired reset token'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid or expired reset token' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
     const pwdCheck = validatePassword(password);
     if (!pwdCheck.isValid) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Password does not meet security requirements',
         errors: pwdCheck.errors
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password does not meet security requirements',
+        errors: pwdCheck.errors 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     if (isCommonPassword(password)) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Password is too common'
@@ -779,6 +1175,17 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Cannot reuse recent passwords'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Password is too common' 
+      });
+    }
+    if (user.isPasswordInHistory && await user.isPasswordInHistory(password)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Cannot reuse recent passwords' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
     user.password = password;
@@ -786,6 +1193,7 @@ exports.resetPassword = async (req, res) => {
     user.resetPasswordExpire = undefined;
     user.activeSessions = [];
     await user.save();
+<<<<<<< HEAD
     logSecurityEvent('PASSWORD_RESET_SUCCESS', {
       userId: user._id,
       ip: clientIp
@@ -798,6 +1206,20 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Password reset failed'
+=======
+    logSecurityEvent('PASSWORD_RESET_SUCCESS', { 
+      userId: user._id, 
+      ip: clientIp 
+    });
+    res.status(200).json({ 
+      success: true, 
+      message: 'Password reset successful. Please login.' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: 'Password reset failed' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -810,9 +1232,15 @@ exports.verifyEmail = async (req, res) => {
     const { token } = req.query;
 
     if (!token) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Verification token required'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Verification token required' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -824,9 +1252,15 @@ exports.verifyEmail = async (req, res) => {
     });
 
     if (!user) {
+<<<<<<< HEAD
       return res.status(400).json({
         success: false,
         message: 'Invalid or expired verification token'
+=======
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid or expired verification token' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
@@ -835,6 +1269,7 @@ exports.verifyEmail = async (req, res) => {
     user.emailVerificationExpire = undefined;
     await user.save();
 
+<<<<<<< HEAD
     logSecurityEvent('EMAIL_VERIFIED', {
       userId: user._id,
       email: user.email
@@ -848,6 +1283,21 @@ exports.verifyEmail = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Verification failed'
+=======
+    logSecurityEvent('EMAIL_VERIFIED', { 
+      userId: user._id, 
+      email: user.email 
+    });
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Email verified successfully. You can now login.' 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      message: 'Verification failed' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -858,17 +1308,29 @@ exports.verifyEmail = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password -passwordHistory');
+<<<<<<< HEAD
 
     if (!user) {
       return res.status(404).json({
         success: false,
         message: 'User not found'
+=======
+    
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'User not found' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       });
     }
 
     // 🔧 FIX: Properly decrypt phone before sending
     const userData = user.toObject();
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     // Additional explicit decryption if needed
     if (userData.phone) {
       try {
@@ -880,15 +1342,26 @@ exports.getMe = async (req, res) => {
       }
     }
 
+<<<<<<< HEAD
     res.status(200).json({
       success: true,
+=======
+    res.status(200).json({ 
+      success: true, 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
       data: { user: userData }
     });
   } catch (error) {
     console.error('Get Me Error:', error);
+<<<<<<< HEAD
     res.status(500).json({
       success: false,
       message: 'Failed to fetch user data'
+=======
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch user data' 
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     });
   }
 };
@@ -896,15 +1369,26 @@ exports.getMe = async (req, res) => {
 exports.validatePassword = async (req, res) => {
   try {
     const { password } = req.body;
+<<<<<<< HEAD
 
     const validation = validatePassword(password);
     const isCommon = isCommonPassword(password);
 
+=======
+    
+    const validation = validatePassword(password);
+    const isCommon = isCommonPassword(password);
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     if (isCommon) {
       validation.isValid = false;
       validation.errors.push('Password is too common');
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 437520f78157dc21dd0d1309b4c5103c25dbe759
     res.json({ success: true, data: validation });
   } catch (error) {
     res.status(400).json({ success: false, message: 'Validation failed' });
