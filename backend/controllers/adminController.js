@@ -490,6 +490,7 @@ exports.getCoupons = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
 exports.deleteCoupon = async (req, res) => {
   try {
     if (!isValidObjectId(req.params.id)) {
@@ -510,5 +511,57 @@ exports.deleteCoupon = async (req, res) => {
     res.status(200).json({ success: true, message: 'Coupon deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to delete coupon' });
+  }
+};
+
+// ==========================================
+// SYSTEM LOGS
+// ==========================================
+/**
+ * @desc Get system logs from files
+ * @route GET /api/admin/logs
+ */
+exports.getLogs = async (req, res) => {
+  try {
+    const { type = 'access', limit = 100 } = req.query;
+    const logFiles = {
+      access: 'access.log',
+      error: 'error.log',
+      security: 'security.log'
+    };
+
+    const fileName = logFiles[type] || 'access.log';
+    const filePath = path.join(__dirname, '../logs', fileName);
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(200).json({
+        success: true,
+        data: { logs: [], message: `Log file ${fileName} does not exist yet.` }
+      });
+    }
+
+    // Read file and parse JSON lines
+    const content = await fs.promises.readFile(filePath, 'utf8');
+    const logs = content
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => {
+        try {
+          return JSON.parse(line);
+        } catch (e) {
+          return { message: line, timestamp: new Date() };
+        }
+      })
+      .reverse() // Newest first
+      .slice(0, Number(limit));
+
+    res.status(200).json({
+      success: true,
+      count: logs.length,
+      data: { logs }
+    });
+  } catch (error) {
+    console.error('Get Logs Error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch logs' });
   }
 };
