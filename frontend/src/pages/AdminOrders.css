@@ -1,0 +1,399 @@
+/* .admin-orders {
+  padding: var(--spacing-lg);
+}
+
+.orders-table {
+  background-color: var(--NepDeals-dark-gray);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.orders-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th {
+  background-color: var(--NepDeals-black);
+  color: var(--NepDeals-gold);
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.orders-table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  color: var(--NepDeals-white);
+}
+
+.status-select {
+  background-color: var(--NepDeals-black);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  color: var(--NepDeals-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+}
+
+.payment-badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.payment-badge.completed {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
+.payment-badge.pending {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+}
+
+.payment-badge.failed {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+.btn-view {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--NepDeals-gold);
+  color: var(--NepDeals-black);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-view:hover {
+  background-color: var(--NepDeals-gold-dark);
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* AdminOrders.css - Updated with Modal Support */
+
+.admin-orders {
+  padding: var(--spacing-lg);
+}
+
+.orders-table {
+  background-color: var(--NepDeals-dark-gray);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.orders-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th {
+  background-color: var(--NepDeals-black);
+  color: var(--NepDeals-gold);
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.orders-table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  color: var(--NepDeals-white);
+}
+
+.status-select {
+  background-color: var(--NepDeals-black);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  color: var(--NepDeals-white);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+}
+
+.status-select.pending { border-color: #fbbf24; }
+.status-select.confirmed { border-color: #60a5fa; }
+.status-select.processing { border-color: #60a5fa; }
+.status-select.shipped { border-color: #4ade80; }
+.status-select.delivered { border-color: #10b981; }
+.status-select.cancelled { border-color: #f87171; }
+
+.payment-badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.payment-badge.completed {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
+.payment-badge.pending {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+}
+
+.payment-badge.processing {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.payment-badge.failed {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+.btn-view {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--NepDeals-gold);
+  color: var(--NepDeals-black);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-view:hover {
+  background-color: var(--NepDeals-gold-dark);
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid var(--NepDeals-gold);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.large-modal {
+  width: 900px;
+  max-width: 95vw;
+}
+
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #1a1a1a;
+  z-index: 10;
+}
+
+.modal-header h3 {
+  color: var(--NepDeals-gold);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-close:hover {
+  color: white;
+}
+
+.modal-body {
+  padding: 30px;
+  color: #ccc;
+}
+
+.order-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.detail-section {
+  background: #252525;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.detail-section.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-section h4 {
+  color: var(--NepDeals-gold);
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.detail-section p {
+  margin: 8px 0;
+  color: #ccc;
+}
+
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.order-item-card {
+  display: flex;
+  gap: 15px;
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.order-item-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.item-info h5 {
+  color: white;
+  margin-bottom: 8px;
+}
+
+.item-info p {
+  color: #999;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.total-line {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #333;
+  font-size: 1.2rem;
+  color: var(--NepDeals-gold);
+}
+
+.modal-footer {
+  padding: 20px 30px;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btn-text {
+  background: none;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-text:hover {
+  border-color: var(--NepDeals-gold);
+  color: var(--NepDeals-gold);
+}
+
+@media (max-width: 768px) {
+  .order-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .large-modal {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+}
+

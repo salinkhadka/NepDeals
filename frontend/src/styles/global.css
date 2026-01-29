@@ -1,0 +1,273 @@
+:root {
+  /* NepDeals Brand Colors */
+  --primary: #C62828;
+  /* Red 800 */
+  --primary-dark: #8E1C1C;
+  /* Red 900 - Darker shade for hover */
+  --primary-light: #FFCDD2;
+  /* Red 100 - Light tint */
+
+  --secondary: #263238;
+  /* Blue Grey 900 */
+  --secondary-light: #37474F;
+  /* Blue Grey 800 */
+
+  /* Background & Surface */
+  --background: #FAFAFA;
+  /* Off-white main background */
+  --surface: #FFFFFF;
+  /* White cards/surfaces */
+  --surface-alt: #F1F3F4;
+  /* Light Grey secondary surface */
+
+  /* Typography Colors */
+  --text-main: #263238;
+  /* Matching Secondary */
+  --text-light: #546E7A;
+  /* Blue Grey 600 */
+  --text-lighter: #90A4AE;
+  /* Blue Grey 300 */
+
+  /* Borders & Dividers */
+  --border: #CFD8DC;
+  /* Blue Grey 100 */
+  --border-light: #ECEFF1;
+  /* Blue Grey 50 */
+
+  /* Functional Colors */
+  --success: #2E7D32;
+  /* Green 800 */
+  --error: #C62828;
+  /* Matching Primary (Red) */
+  --warning: #F9A825;
+  /* Yellow 800 */
+  --info: #1565C0;
+  /* Blue 800 */
+
+  /* Spacing System */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* Shadows (Clean/Modern) */
+  --shadow-sm: 0 1px 2px 0 rgba(38, 50, 56, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(38, 50, 56, 0.1), 0 2px 4px -1px rgba(38, 50, 56, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(38, 50, 56, 0.1), 0 4px 6px -2px rgba(38, 50, 56, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(38, 50, 56, 0.1), 0 10px 10px -5px rgba(38, 50, 56, 0.04);
+  --shadow-primary: 0 4px 14px 0 rgba(198, 40, 40, 0.25);
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* transitions */
+  --transition: all 0.3s ease;
+
+  /* Legacy variable mapping for compatibility */
+  --nepdeals-red: var(--primary);
+  --nepdeals-red-dark: var(--primary-dark);
+  --nepdeals-slate: var(--secondary);
+  --nepdeals-white: var(--surface);
+  /* Mapped to Surface (White) instead of Background */
+  --nepdeals-light-gray: var(--surface-alt);
+  --nepdeals-medium-gray: var(--text-light);
+  --nepdeals-border: var(--border);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--background);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins', system-ui, sans-serif;
+  /* Keep Poppins for headings for now */
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  outline: none;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Common Components */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Button Styles - Global Overrides */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  /* White text on Red is standard and accessible */
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--secondary);
+  background: var(--secondary);
+  color: white;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-4 {
+  margin-top: var(--spacing-lg);
+}
+
+.mb-4 {
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Card Defaults */
+.card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Loader */
+.lux-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--primary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* --- New Layout Utilities --- */
+.page-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  width: 100%;
+}
+
+.section-spacing {
+  padding: var(--spacing-2xl) 0;
+}
+
+.grid-layout {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: var(--spacing-lg) 0;
+  }
+}
