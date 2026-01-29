@@ -1,0 +1,75 @@
+.admin-users {
+  padding: var(--spacing-lg);
+}
+
+.users-table {
+  background-color: var(--nepdeals-white);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--nepdeals-border);
+}
+
+.users-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th {
+  background-color: var(--nepdeals-slate);
+  color: var(--nepdeals-white);
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--nepdeals-border);
+}
+
+.users-table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--nepdeals-border);
+  color: var(--nepdeals-slate);
+}
+
+.role-badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  background-color: var(--nepdeals-slate);
+  color: var(--nepdeals-white);
+}
+
+.role-badge.user {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: var(--info);
+}
+
+.verified-badge,
+.enabled-badge {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.unverified-badge,
+.disabled-badge {
+  color: var(--error);
+  font-weight: 600;
+}
+
+.btn-view {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--nepdeals-slate);
+  color: var(--nepdeals-white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-view:hover {
+  background-color: var(--nepdeals-red);
+}
