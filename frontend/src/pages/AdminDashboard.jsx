@@ -8,7 +8,8 @@ import AdminProducts from './AdminProducts'
 import AdminCategories from './AdminCategories'
 import AdminOrders from './AdminOrders'
 import AdminUsers from './AdminUsers'
-import AdminCoupons from './AdminCoupons' // <--- Import New Component
+import AdminCoupons from './AdminCoupons'
+import AdminLogs from './AdminLogs'
 
 import './AdminDashboard.css'
 
@@ -75,6 +76,9 @@ const AdminDashboard = () => {
             <button className={activeTab === 'users' ? 'active' : ''} onClick={() => setActiveTab('users')}>
               <span className="icon">👥</span> Users
             </button>
+            <button className={activeTab === 'logs' ? 'active' : ''} onClick={() => setActiveTab('logs')}>
+              <span className="icon">📜</span> Logs
+            </button>
           </nav>
         </aside>
 
@@ -124,6 +128,7 @@ const AdminDashboard = () => {
             {activeTab === 'coupons' && <AdminCoupons />}
             {activeTab === 'orders' && <AdminOrders />}
             {activeTab === 'users' && <AdminUsers />}
+            {activeTab === 'logs' && <AdminLogs />}
           </div>
         </main>
       </div>

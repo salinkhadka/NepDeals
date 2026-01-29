@@ -12,7 +12,8 @@ const {
   createCoupon,
   updateCoupon,
   getCoupons,
-  deleteCoupon
+  deleteCoupon,
+  getLogs
 } = require('../controllers/adminController');
 
 const { protect, authorize } = require('../middleware/auth');
@@ -43,6 +44,9 @@ router.get('/coupons', getCoupons);
 router.post('/coupons', createCoupon);
 router.delete('/coupons/:id', deleteCoupon);
 router.put('/coupons/:id', updateCoupon);
+
+// Logs
+router.get('/logs', getLogs);
 
 module.exports = router;
 

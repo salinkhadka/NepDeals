@@ -4,6 +4,8 @@ const User = require('../models/User');
 const Order = require('../models/Order');
 const Coupon = require('../models/Coupon');
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 const { logSecurityEvent } = require('../utils/logger');
 
 // 🛡️ SECURITY HELPERS
